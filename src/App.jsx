@@ -13,7 +13,7 @@ const stagger = {
   show: { transition: { staggerChildren: 0.18 } },
 };
 
-const PETAL_COLORS = ["#8b1a1a","#e8dfd5","#c8b090","#e0cfb8","#5c1818","#fdfbf7"];
+const PETAL_COLORS = ["#7a2433", "#efe0c1", "#c49b43", "#ddc8a5", "#215547", "#fffaf4"];
 
 function Petals({ count = 12 }) {
   return Array.from({ length: count }).map((_, i) => (
