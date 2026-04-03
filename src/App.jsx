@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import "./App.css";
-import abdusalamPhoto from "./assets/abdusalam.jpeg";
-import hennaPhoto from "./assets/henna.jpeg";
+import abdusalamPhoto from "./assets/abdusalam-optimized.jpg";
+import hennaPhoto from "./assets/henna-optimized.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -11,6 +11,15 @@ const fadeUp = {
 
 const stagger = {
   show: { transition: { staggerChildren: 0.18 } },
+};
+
+const coupleFade = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
+
+const coupleStagger = {
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.04 } },
 };
 
 const PETAL_COLORS = ["#7a2433", "#d28ea0", "#efe0c1", "#c49b43", "#ddc8a5", "#fffaf4"];
@@ -36,16 +45,20 @@ function Petals({ count = 12 }) {
 
 
 
-function PhotoCard({ name, location, image, alt, objectPosition = "center" }) {
+function PhotoCard({ name, location, image, alt, objectPosition = "center", imageScale = 1, variants = fadeUp }) {
   return (
-    <motion.div className="photo-card" variants={fadeUp}>
+    <motion.div className="photo-card" variants={variants}>
       <div className="photo-frame">
         <img
           className="photo-image"
           src={image}
           alt={alt ?? `${name} portrait`}
-          loading="lazy"
-          style={{ objectPosition }}
+          width="800"
+          height="1200"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          style={{ objectPosition, transform: `scale(${imageScale})` }}
         />
       </div>
       <div className="photo-name">{name}</div>
@@ -177,6 +190,15 @@ function RSVPForm() {
 export default function App() {
   const scrollRootRef = React.useRef(null);
 
+  React.useEffect(() => {
+    [abdusalamPhoto, hennaPhoto].forEach((src) => {
+      const image = new Image();
+      image.decoding = "async";
+      image.fetchPriority = "high";
+      image.src = src;
+    });
+  }, []);
+
   return (
     <div className="invite" ref={scrollRootRef}>
       <div className="invite-petals" aria-hidden="true">
@@ -284,8 +306,8 @@ export default function App() {
 
       {/* 4. COUPLE PHOTOS */}
       <section className="section couple-section">
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ root: scrollRootRef, once: true, amount: 0.4 }} style={{ position: "relative", zIndex: 2, width: "100%" }}>
-          <motion.div className="couple-section-title" variants={fadeUp}>The Blessed Union</motion.div>
+        <motion.div variants={coupleStagger} initial="hidden" whileInView="show" viewport={{ root: scrollRootRef, once: true, amount: 0.2 }} style={{ position: "relative", zIndex: 2, width: "100%" }}>
+          <motion.div className="couple-section-title" variants={coupleFade}>The Blessed Union</motion.div>
           <div className="shimmer-line" />
           <div className="couple-photos">
             <PhotoCard
@@ -293,13 +315,16 @@ export default function App() {
               location="Kondotty, Malappuram"
               image={abdusalamPhoto}
               objectPosition="50% 10%"
+              variants={coupleFade}
             />
-            <motion.div className="heart-divider" variants={fadeUp}>💍</motion.div>
+            <motion.div className="heart-divider" variants={coupleFade}>💍</motion.div>
             <PhotoCard
               name="Fathima Hanna"
               location="Beypore, Kozhikode"
               image={hennaPhoto}
-              objectPosition="50% 18%"
+              objectPosition="50% 10%"
+              imageScale={1.52}
+              variants={coupleFade}
             />
           </div>
         </motion.div>

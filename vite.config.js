@@ -15,8 +15,10 @@ export default defineConfig({
     // Split code for better loading performance
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom']
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor'
+          }
         }
       }
     }

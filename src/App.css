@@ -628,12 +628,15 @@
   z-index: 1;
   width: min(100%, 560px);
   margin-inline: auto;
+  will-change: transform, opacity;
 }
 
 .heart-divider {
   font-size: clamp(24px, 3.2vw, 30px);
   animation: pulseHeart 1.2s ease-in-out infinite;
   color: var(--maroon);
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes pulseHeart {
@@ -648,6 +651,9 @@
   gap: 8px;
   flex: 0 1 170px;
   min-width: 0;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .photo-frame {
@@ -661,6 +667,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  transform: translateZ(0);
 }
 
 .photo-placeholder {
@@ -694,6 +701,8 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .photo-name {
