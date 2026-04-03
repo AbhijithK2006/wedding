@@ -1,8 +1,8 @@
-﻿import React from "react";
+import React from "react";
 import { motion as Motion } from "framer-motion";
 import "./App.css";
-import abdusalamPhoto from "./assets/abdusalam-optimized.jpg";
-import hennaPhoto from "./assets/henna-optimized.jpg";
+import abdusalamPhoto from "./assets/abdusalam-new.jpeg";
+import hennaPhoto from "./assets/hanna-new.jpeg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -88,10 +88,10 @@ function useCountdown() {
     const diff = WEDDING_DATE - new Date();
     if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
     return {
-      days:    Math.floor(diff / 86400000),
-      hours:   Math.floor((diff % 86400000) / 3600000),
-      minutes: Math.floor((diff % 3600000)  / 60000),
-      seconds: Math.floor((diff % 60000)    / 1000),
+      days: Math.floor(diff / 86400000),
+      hours: Math.floor((diff % 86400000) / 3600000),
+      minutes: Math.floor((diff % 3600000) / 60000),
+      seconds: Math.floor((diff % 60000) / 1000),
     };
   };
   const [time, setTime] = React.useState(calc);
@@ -105,8 +105,8 @@ function useCountdown() {
 function CountdownSection({ viewport }) {
   const { days, hours, minutes, seconds } = useCountdown();
   const units = [
-    { value: days,    label: "Days",    arabic: "\u0623\u064a\u0651\u064e\u0627\u0645" },
-    { value: hours,   label: "Hours",   arabic: "\u0633\u064e\u0627\u0639\u064e\u0627\u062a" },
+    { value: days, label: "Days", arabic: "\u0623\u064a\u0651\u064e\u0627\u0645" },
+    { value: hours, label: "Hours", arabic: "\u0633\u064e\u0627\u0639\u064e\u0627\u062a" },
     { value: minutes, label: "Minutes", arabic: "\u062f\u064e\u0642\u064e\u0627\u0626\u0650\u0642" },
     { value: seconds, label: "Seconds", arabic: "\u062b\u064e\u0648\u064e\u0627\u0646\u0650" },
   ];
@@ -182,9 +182,21 @@ function RSVPForm() {
     setSubmitError("");
     setIsSubmitting(true);
     try {
-      // Simulate submission delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const payload = {
+        ...form,
+        timestamp: new Date().toLocaleString()
+      };
+
+      // Send data to SheetDB
+      // Replace the URL below with your actual SheetDB API URL
+      const response = await fetch("https://sheetdb.io/api/v1/YOUR_API_ID", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({ data: [payload] }),
+      });
+
+      if (!response.ok) throw new Error("Submission failed");
+
       if (normalizedPhone) {
         window.localStorage.setItem(localPhoneKey, "submitted");
       }
@@ -339,14 +351,14 @@ export default function App() {
             <div className="card-groom">
               <div className="card-person-label">Groom</div>
               <div className="card-person-name">Abdusalam</div>
-              <div className="card-person-sub">S/O <span>Abdul Latheef &amp; Sainaba</span></div>
+              <div className="card-person-sub">S/O <span>Muhammed Kutty and Kadheeja</span></div>
               <div className="card-person-place">Kondotty, Malappuram</div>
             </div>
             <div className="card-and"><div className="card-and-ring">{SYMBOLS.heart}</div></div>
             <div className="card-bride">
               <div className="card-person-label">Bride</div>
               <div className="card-person-name">Fathima Hanna</div>
-              <div className="card-person-sub">D/O <span>Mohammed &amp; Mariyam</span></div>
+              <div className="card-person-sub">D/O <span>Mustafa and Hafsa</span></div>
               <div className="card-person-place">Beypore, Kozhikode</div>
             </div>
           </Motion.div>
@@ -374,7 +386,8 @@ export default function App() {
               name="Abdusalam"
               location="Kondotty, Malappuram"
               image={abdusalamPhoto}
-              objectPosition="50% 10%"
+              objectPosition="56% 12%"
+              imageScale={1.14}
               variants={coupleFade}
             />
             <Motion.div className="heart-divider" variants={coupleFade}>{SYMBOLS.ring}</Motion.div>
@@ -382,8 +395,8 @@ export default function App() {
               name="Fathima Hanna"
               location="Beypore, Kozhikode"
               image={hennaPhoto}
-              objectPosition="50% 10%"
-              imageScale={1.52}
+              objectPosition="60% 10%"
+              imageScale={1.12}
               variants={coupleFade}
             />
           </div>
@@ -398,6 +411,20 @@ export default function App() {
           </Motion.h2>
           <div className="shimmer-line" />
           <Motion.div className="events-grid" variants={stagger}>
+            <Motion.div className="event-card mehndi" variants={fadeUp}>
+              <div className="event-icon">{SYMBOLS.herb}</div>
+              <div className="event-title">Mehndi Night</div>
+              <div className="event-arabic">{"\u062d\u0641\u0644\u0629 \u0627\u0644\u062d\u0646\u0627\u0621"}</div>
+              <div className="event-detail">
+                <strong>{`Saturday ${SYMBOLS.middleDot} 16th May 2026`}</strong>
+                6:00 PM onwards<br />
+                Family Residence<br />
+                Kondotty, Malappuram, Kerala
+              </div>
+              <button className="map-btn" onClick={() => window.open("https://maps.app.goo.gl/c3SixienM89c6tFd6")}>
+                {`${SYMBOLS.pin} View Location`}
+              </button>
+            </Motion.div>
             <Motion.div className="event-card reception" variants={fadeUp}>
               <div className="event-icon">{SYMBOLS.mosque}</div>
               <div className="event-title">Marriage Reception</div>
@@ -412,20 +439,6 @@ export default function App() {
                 {`${SYMBOLS.pin} View Location`}
               </button>
             </Motion.div>
-            <Motion.div className="event-card mehndi" variants={fadeUp}>
-              <div className="event-icon">{SYMBOLS.herb}</div>
-              <div className="event-title">Mehndi Night</div>
-              <div className="event-arabic">{"\u062d\u0641\u0644\u0629 \u0627\u0644\u062d\u0646\u0627\u0621"}</div>
-              <div className="event-detail">
-                <strong>{`Saturday ${SYMBOLS.middleDot} 16th May 2026`}</strong>
-                6:00 PM onwards<br />
-                Family Residence<br />
-                Beypore, Kozhikode, Kerala
-              </div>
-              <button className="map-btn" onClick={() => window.open("https://google.com/maps?q=11.1386026,75.9655216&z=17&hl=en")}>
-                {`${SYMBOLS.pin} View Location`}
-              </button>
-            </Motion.div>
           </Motion.div>
         </Motion.div>
       </section>
@@ -433,19 +446,34 @@ export default function App() {
       {/* 6. COUNTDOWN */}
       <CountdownSection viewport={{ root: scrollRootRef, once: true, amount: 0.4 }} />
 
-      {/* 7. QUOTE 2 */}
+      {/* 7. PRAYER & DUA */}
       <section className="section quote2-section">
-        <Motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ root: scrollRootRef, once: true, amount: 0.5 }} style={{ position: "relative", zIndex: 2, padding: "0 20px" }}>
-          <Motion.div variants={fadeUp}><span className="ornament">{SYMBOLS.flower}</span></Motion.div>
-          <Motion.div className="arabic-quote" variants={fadeUp}>
-            {"\u0647\u064f\u0646\u064e\u0651 \u0644\u0650\u0628\u064e\u0627\u0633\u064c \u0644\u064e\u0651\u0643\u064f\u0645\u0652 \u0648\u064e\u0623\u064e\u0646\u062a\u064f\u0645\u0652 \u0644\u0650\u0628\u064e\u0627\u0633\u064c \u0644\u064e\u0651\u0647\u064f\u0646\u064e\u0651"}
-          </Motion.div>
+        <Motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ root: scrollRootRef, once: true, amount: 0.3 }} style={{ position: "relative", zIndex: 2, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Motion.h2 className="section-heading" variants={fadeUp}>
+            Our Prayer & Dua <span>{`${SYMBOLS.middleDot} `}{"\u062f\u0639\u0627\u0621 للعروسين"}</span>
+          </Motion.h2>
           <div className="shimmer-line" />
-          <Motion.div className="quote-translation" variants={fadeUp}>
-            "They are a garment for you and you are a garment for them"
-          </Motion.div>
-          <Motion.div className="quote-source" variants={fadeUp}>
-            {SYMBOLS.emDash} Quran 2:187
+          <Motion.div className="dua-card" variants={stagger} style={{
+            background: "var(--surface-gradient)",
+            border: "1px solid var(--border)",
+            borderRadius: "8px",
+            padding: "clamp(24px, 5vw, 40px)",
+            width: "min(500px, 92vw)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            boxShadow: "0 18px 36px rgba(24, 10, 15, 0.26)"
+          }}>
+            <Motion.div className="arabic-quote" variants={fadeUp} style={{ fontSize: "clamp(18px, 4vw, 28px)", lineHeight: 1.6, marginBottom: "12px" }}>
+              {"\u0627\u0644\u0644\u064e\u0651\u0647\u064f\u0645\u064e\u0651 \u0628\u064e\u0627\u0631\u0650\u0643\u064e \u0644\u064e\u0647\u064f\u0645\u064e\u0627 \u0648\u064e\u0628\u064e\u0627\u0631\u0650\u0643\u064e \u0639\u064e\u0644\u064e\u064a\u0652\u0647\u0650\u0645\u064e\u0627 \u0648\u064e\u0627\u062c\u0652\u0645\u064e\u0639\u064e \u0628\u064e\u064a\u0652\u0646\u064e\u0647\u064f\u0645\u064e\u0627 \u0641\u0650\u064a \u0627\u0644\u0652\u062e\u064e\u064a\u0652\u0631\u0650"}
+            </Motion.div>
+            <div className="shimmer-line" style={{ width: "80%" }} />
+            <Motion.div className="quote-translation" variants={fadeUp} style={{ fontSize: "clamp(14px, 2.5vw, 17px)", color: "var(--muted)" }}>
+              "O Allah, bless them, shower Your blessings upon them, and unite them in goodness."
+            </Motion.div>
+            <Motion.div className="quote-source" variants={fadeUp} style={{ marginTop: "24px", color: "var(--gold)", fontWeight: 600, letterSpacing: "2px" }}>
+              DUA FOR THE NEWLYWEDS
+            </Motion.div>
           </Motion.div>
         </Motion.div>
       </section>
@@ -474,21 +502,21 @@ export default function App() {
       {/* FOOTER */}
       <footer className="section footer-section">
         <div className="shimmer-line" style={{ marginBottom: "20px" }} />
-        <div className="footer-text">{"\u0628\u064e\u0627\u0631\u064e\u0643\u064e \u0627\u0644\u0644\u064e\u0651\u0647\u064f \u0644\u064e\u0643\u064f\u0645\u064e\u0627 \u0648\u064e\u0628\u064e\u0627\u0631\u064e\u0643\u064e \u0639\u064e\u0644\u064e\u064a\u0652\u0643\u064f\u0645\u064e\u0627"}</div>
-        <div className="footer-names" style={{ color: "rgba(255,255,255,0.3)", marginTop: "6px", fontSize: "12px" }}>
-          May Allah bless you both
+        <div className="footer-text">بارك الله لكما</div>
+        <div className="footer-names">
+          <span>Abdusalam</span>
+          <span>&amp;</span>
+          <span>Fathima Hanna</span>
         </div>
+        <div className="footer-divider">✦ ✦ ✦</div>
+        <div className="quote-translation footer-quote">
+          "And He it is who has created man from water, then He has established relationships of lineage and marriage."
+        </div>
+        <div className="quote-source footer-source">Surah Al-Furqan 25:54</div>
         <div className="shimmer-line" style={{ margin: "16px auto" }} />
-        <div className="footer-names">{`ABDUSALAM ${SYMBOLS.sparkle} FATHIMA HANNA ${SYMBOLS.middleDot} 2026`}</div>
+        <div className="footer-meta">17 · 05 · 2026  ✦  KP LOUNGE AUDITORIUM  ✦  KONDOTTY, KERALA</div>
       </footer>
 
     </div>
   );
 }
-
-
-
-
-
-
-

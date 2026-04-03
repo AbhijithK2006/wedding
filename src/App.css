@@ -717,7 +717,7 @@
   color: var(--muted);
   letter-spacing: 0.4px;
   line-height: 1.35;
-  max-width: 15ch;
+  white-space: nowrap;
 }
 
 @media (max-width: 640px) {
@@ -762,7 +762,6 @@
 
   .photo-location {
     font-size: 11px;
-    max-width: 13ch;
     padding-inline: 0;
   }
 
@@ -1359,7 +1358,99 @@
 
 .footer-names {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(14px, 2.5vw, 18px);
+  font-size: clamp(20px, 4.4vw, 34px);
   color: #efe3c6;
   letter-spacing: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.footer-divider {
+  margin-top: 16px;
+  color: var(--gold-soft);
+  font-size: clamp(16px, 2.8vw, 22px);
+  letter-spacing: 6px;
+}
+
+.footer-quote {
+  margin-top: 18px;
+  max-width: 720px;
+}
+
+.footer-source {
+  text-transform: none;
+}
+
+.footer-meta {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(12px, 2vw, 16px);
+  color: #efe3c6;
+  letter-spacing: 1.8px;
+  text-align: center;
+  line-height: 1.8;
+  margin-top: 28px;
+  white-space: nowrap;
+}
+
+@media (max-width: 540px) {
+  .footer-section {
+    padding: 32px 18px 44px;
+  }
+
+  .footer-text {
+    font-size: clamp(22px, 7vw, 30px);
+    margin-bottom: 12px;
+  }
+
+  .footer-names {
+    font-size: clamp(24px, 8vw, 32px);
+    letter-spacing: 1.4px;
+    gap: 4px;
+  }
+
+  .footer-divider {
+    margin-top: 14px;
+    letter-spacing: 4px;
+  }
+
+  .footer-quote {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.8;
+    max-width: 92%;
+  }
+
+  .footer-source {
+    margin-top: 12px;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+  }
+
+  .footer-meta {
+    margin-top: 34px;
+    font-size: 11px;
+    letter-spacing: 0.9px;
+    line-height: 1.7;
+    white-space: normal;
+    max-width: 92%;
+  }
+}
+
+@media (max-width: 380px) {
+  .footer-section {
+    padding-inline: 14px;
+  }
+
+  .footer-names {
+    font-size: clamp(22px, 8.6vw, 28px);
+  }
+
+  .footer-meta {
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    max-width: 96%;
+  }
 }
