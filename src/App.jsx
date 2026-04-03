@@ -309,11 +309,11 @@ export default function App() {
       const targetScroll = sections[index].offsetTop;
 
       animate(el.scrollTop, targetScroll, {
-        duration: 1.2, // Slightly faster for a snappier feel
-        ease: [0.33, 1, 0.68, 1], // Maintaining the smooth-end easing
+        duration: 0.8, // Snappier feel as requested
+        ease: [0.33, 1, 0.68, 1],
         onUpdate: (latest) => { el.scrollTop = latest; },
         onComplete: () => { 
-          setTimeout(() => { isAnimating.current = false; }, 150);
+          setTimeout(() => { isAnimating.current = false; }, 100);
         }
       });
     };
