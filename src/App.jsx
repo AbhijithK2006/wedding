@@ -309,7 +309,7 @@ export default function App() {
       const targetScroll = sections[index].offsetTop;
 
       animate(el.scrollTop, targetScroll, {
-        duration: 0.8, // Snappier feel as requested
+        duration: 1.0, // 1 second scroll speed as requested
         ease: [0.33, 1, 0.68, 1],
         onUpdate: (latest) => { el.scrollTop = latest; },
         onComplete: () => { 
