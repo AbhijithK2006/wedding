@@ -1,25 +1,25 @@
 import React from "react";
-import { motion as Motion } from "framer-motion";
+import { motion as Motion, animate } from "framer-motion";
 import "./App.css";
 import abdusalamPhoto from "./assets/abdusalam-new.jpeg";
 import hennaPhoto from "./assets/hanna-new.jpeg";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 1.2, ease: "easeOut" } },
 };
 
 const stagger = {
-  show: { transition: { staggerChildren: 0.18 } },
+  show: { transition: { staggerChildren: 0.22, delayChildren: 0.1 } },
 };
 
 const coupleFade = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
 const coupleStagger = {
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.04 } },
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.08 } },
 };
 
 const PETAL_COLORS = ["#7a2433", "#d28ea0", "#efe0c1", "#c49b43", "#ddc8a5", "#fffaf4"];
@@ -142,6 +142,24 @@ function CountdownSection({ viewport }) {
         <Motion.div className="cd-date-line" variants={fadeUp}>
           {`17 ${SYMBOLS.middleDot} 05 ${SYMBOLS.middleDot} 2026`}
         </Motion.div>
+
+        <Motion.button
+          className="save-date-btn"
+          variants={fadeUp}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            const baseUrl = "https://www.google.com/calendar/render?action=TEMPLATE";
+            const text = encodeURIComponent("Wedding: Abdusalam & Fathima Hanna");
+            const dates = "20260517T120000/20260517T160000";
+            const details = encodeURIComponent("You are cordially invited to celebrate the wedding of Abdusalam & Fathima Hanna. Lunch will be served at 12:00 PM.");
+            const location = encodeURIComponent("KP Lounge Auditorium, Kondotty, Malappuram, Kerala");
+            const url = `${baseUrl}&text=${text}&dates=${dates}&details=${details}&location=${location}`;
+            window.open(url, "_blank");
+          }}
+        >
+          {`${SYMBOLS.calendar} Save the Date`}
+        </Motion.button>
       </Motion.div>
     </section>
   );
@@ -261,14 +279,72 @@ function RSVPForm() {
 
 export default function App() {
   const scrollRootRef = React.useRef(null);
+  const isAnimating = React.useRef(false);
+  const currentSection = React.useRef(0);
 
   React.useEffect(() => {
+    // Preload images
     [abdusalamPhoto, hennaPhoto].forEach((src) => {
       const image = new Image();
       image.decoding = "async";
       image.fetchPriority = "high";
       image.src = src;
     });
+
+    // Custom Scroll Snapping Logic
+    const el = scrollRootRef.current;
+    if (!el) return;
+
+    const sections = el.querySelectorAll(".section");
+    const count = sections.length;
+
+    const snapTo = (index) => {
+      if (index < 0 || index >= count) return;
+      isAnimating.current = true;
+      currentSection.current = index;
+      
+      const targetScroll = sections[index].offsetTop;
+
+      animate(el.scrollTop, targetScroll, {
+        duration: 1.4,
+        ease: [0.19, 1, 0.22, 1],
+        onUpdate: (latest) => { el.scrollTop = latest; },
+        onComplete: () => { 
+          setTimeout(() => { isAnimating.current = false; }, 150);
+        }
+      });
+    };
+
+    const handleWheel = (e) => {
+      e.preventDefault();
+      if (isAnimating.current) return;
+
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const nextIndex = Math.max(0, Math.min(count - 1, currentSection.current + direction));
+      
+      if (nextIndex !== currentSection.current) {
+        snapTo(nextIndex);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (isAnimating.current) return;
+      if (e.key === "ArrowDown" || e.key === "PageDown") {
+        e.preventDefault();
+        snapTo(Math.min(count - 1, currentSection.current + 1));
+      } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+        e.preventDefault();
+        snapTo(Math.max(0, currentSection.current - 1));
+      }
+    };
+
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("keydown", handleKeyDown);
+    
+    return () => {
+      el.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   return (
