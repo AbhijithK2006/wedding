@@ -1,9 +1,9 @@
 :root {
-  --bg-ivory: #102923;
-  --bg-sage: #183a31;
-  --bg-rose: #2f2130;
-  --surface: #1e4036;
-  --surface-soft: #274d42;
+  --bg-ivory: #0d211c;
+  --bg-sage: #123127;
+  --bg-rose: #17372d;
+  --surface: #173a30;
+  --surface-soft: #1f473b;
   --ink: #f4e7cc;
   --muted: #d9caab;
   --gold: #d3ab59;
@@ -13,6 +13,12 @@
   --emerald-deep: #0d211c;
   --border: #8c7340;
   --white-soft: #fff7e8;
+  --page-top: #0d211c;
+  --page-mid: #123127;
+  --page-bottom: #173a30;
+  --page-bottom-soft: #1f473b;
+  --page-glow: rgba(240, 223, 171, 0.14);
+  --surface-gradient: linear-gradient(180deg, rgba(31, 71, 59, 0.97) 0%, rgba(13, 33, 28, 0.99) 100%);
 }
 
 .invite {
@@ -110,8 +116,8 @@
 /* ── Section 1: Hero ── */
 .hero-section {
   background:
-    radial-gradient(circle at top, rgba(240, 223, 171, 0.16), transparent 42%),
-    linear-gradient(180deg, #1d4338 0%, #17342c 52%, #102923 100%);
+    radial-gradient(circle at top, var(--page-glow), transparent 42%),
+    linear-gradient(180deg, var(--page-bottom-soft) 0%, var(--page-mid) 52%, var(--page-top) 100%);
   justify-content: space-between;
   padding: 60px 20px 50px;
 }
@@ -232,7 +238,7 @@
   gap: clamp(8px, 1.5vw, 18px);
   width: min(100%, 760px);
   padding: 18px clamp(14px, 3vw, 28px);
-  background: rgba(12, 33, 28, 0.34);
+  background: rgba(13, 33, 28, 0.62);
   border-top: 1px solid rgba(211, 171, 89, 0.24);
   border-bottom: 1px solid rgba(211, 171, 89, 0.24);
   border-radius: 16px;
@@ -376,7 +382,7 @@
 
 /* ── Section 2: Quote ── */
 .quote-section {
-  background: linear-gradient(180deg, #17342c 0%, #1f4438 100%);
+  background: linear-gradient(180deg, var(--page-mid) 0%, var(--page-bottom-soft) 100%);
 }
 
 .arabic-quote {
@@ -408,7 +414,7 @@
 
 /* ── Section 4: Couple Photos ── */
 .invite-card-section {
-  background: linear-gradient(180deg, #16322b 0%, #30222f 100%);
+  background: linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 48%, var(--page-bottom) 100%);
 }
 
 .invite-card {
@@ -416,7 +422,7 @@
   z-index: 1;
   width: min(520px, 92vw);
   box-sizing: border-box;
-  background: linear-gradient(180deg, rgba(39,77,66,0.96) 0%, rgba(24,58,49,0.98) 100%);
+  background: var(--surface-gradient);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: clamp(24px, 5vw, 52px) clamp(16px, 4vw, 44px);
@@ -585,7 +591,7 @@
 
 /* ── Section 4: Couple Photos ── */
 .couple-section {
-  background: linear-gradient(180deg, #2b2130 0%, #17332b 100%);
+  background: linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 42%, var(--page-bottom) 100%);
   padding-block: clamp(40px, 7vw, 72px);
 }
 
@@ -766,7 +772,7 @@
 
 /* ── Section 4: Events ── */
 .events-section {
-  background: linear-gradient(180deg, #17332b 0%, #1f4438 100%);
+  background: linear-gradient(180deg, var(--page-mid) 0%, var(--page-bottom-soft) 100%);
   align-items: center;
   padding-block: clamp(28px, 5vw, 48px);
 }
@@ -787,8 +793,9 @@
 }
 
 .events-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 16px;
   justify-content: center;
   align-items: stretch;
@@ -802,10 +809,11 @@
 }
 
 .event-card {
-  background: linear-gradient(180deg, rgba(39,77,66,0.96) 0%, rgba(24,58,49,0.98) 100%);
+  background: var(--surface-gradient);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 22px 18px;
+  flex: 1 1 0;
   min-width: 0;
   text-align: center;
   position: relative;
@@ -816,13 +824,17 @@
 
 @media (max-width: 540px) {
   .events-grid {
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 12px;
     margin-top: 16px;
     padding: 0 8px;
-    max-width: 360px;
+    max-width: 320px;
   }
   .event-card {
     width: 100%;
+    flex: 0 0 auto;
     padding: 14px 10px 12px;
   }
 }
@@ -938,7 +950,7 @@
 
 /* ── Countdown Section ── */
 .countdown-section {
-  background: linear-gradient(180deg, #1d4338 0%, #102923 100%);
+  background: linear-gradient(180deg, var(--page-bottom-soft) 0%, var(--page-top) 100%);
 }
 
 .cd-arabic {
@@ -980,7 +992,7 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  background: linear-gradient(180deg, rgba(39,77,66,0.96) 0%, rgba(24,58,49,0.98) 100%);
+  background: var(--surface-gradient);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: clamp(16px, 3vw, 28px) clamp(18px, 4vw, 36px);
@@ -1031,12 +1043,12 @@
 
 /* ── Section 5: Second Quote ── */
 .quote2-section {
-  background: linear-gradient(180deg, #102923 0%, #1f4438 100%);
+  background: linear-gradient(180deg, var(--page-top) 0%, var(--page-bottom-soft) 100%);
 }
 
 /* ── Section 6: RSVP ── */
 .rsvp-section {
-  background: linear-gradient(180deg, #1a3c33 0%, #112a23 100%);
+  background: linear-gradient(180deg, var(--page-mid) 0%, var(--page-top) 100%);
   padding-block: clamp(24px, 4vw, 42px);
 }
 
@@ -1044,7 +1056,7 @@
   position: relative;
   z-index: 1;
   width: min(450px, 92vw);
-  background: linear-gradient(180deg, rgba(39,77,66,0.97) 0%, rgba(24,58,49,0.99) 100%);
+  background: var(--surface-gradient);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: clamp(18px, 4vw, 32px) clamp(14px, 3.5vw, 28px);
