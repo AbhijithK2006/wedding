@@ -337,6 +337,9 @@ export default function App() {
                 Family Residence<br />
                 Beypore, Kozhikode, Kerala
               </div>
+              <button className="map-btn" onClick={() => window.open("https://google.com/maps?q=11.1386026,75.9655216&z=17&hl=en")}>
+                📍 View Location
+              </button>
             </motion.div>
           </motion.div>
         </motion.div>
