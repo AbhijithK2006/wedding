@@ -1,24 +1,25 @@
 :root {
-  --bg-ivory: #0d211c;
-  --bg-sage: #123127;
-  --bg-rose: #17372d;
-  --surface: #173a30;
-  --surface-soft: #1f473b;
-  --ink: #f4e7cc;
-  --muted: #d9caab;
+  --bg-ivory: #241419;
+  --bg-sage: #3a1d28;
+  --bg-rose: #4c2634;
+  --surface: #4d2634;
+  --surface-soft: #653145;
+  --ink: #f7eadf;
+  --muted: #dcc7be;
   --gold: #d3ab59;
   --gold-soft: #f0dfab;
-  --maroon: #d59aa7;
-  --emerald: #58a08a;
-  --emerald-deep: #0d211c;
-  --border: #8c7340;
-  --white-soft: #fff7e8;
-  --page-top: #0d211c;
-  --page-mid: #123127;
-  --page-bottom: #173a30;
-  --page-bottom-soft: #1f473b;
-  --page-glow: rgba(240, 223, 171, 0.14);
-  --surface-gradient: linear-gradient(180deg, rgba(31, 71, 59, 0.97) 0%, rgba(13, 33, 28, 0.99) 100%);
+  --maroon: #e2a7b4;
+  --emerald: #c88495;
+  --emerald-deep: #241419;
+  --border: #9a7652;
+  --white-soft: #fff8f2;
+  --page-top: #241419;
+  --page-mid: #3a1d28;
+  --page-bottom: #4d2634;
+  --page-bottom-soft: #653145;
+  --page-glow: rgba(226, 167, 180, 0.18);
+  --page-shell-background: linear-gradient(180deg, var(--emerald-deep) 0%, #31151e 100%);
+  --surface-gradient: linear-gradient(180deg, rgba(101, 49, 69, 0.97) 0%, rgba(36, 20, 25, 0.99) 100%);
 }
 
 .invite {
@@ -32,10 +33,20 @@
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   overscroll-behavior-y: contain;
+  background-color: var(--emerald-deep);
 }
 
 .invite * {
   text-align: center;
+}
+
+.invite::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--page-shell-background);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .invite-petals {
@@ -59,6 +70,7 @@
   position: relative;
   overflow: hidden;
   padding: 40px 20px;
+  background: transparent;
 }
 
 .section > * {
@@ -115,9 +127,7 @@
 
 /* ── Section 1: Hero ── */
 .hero-section {
-  background:
-    radial-gradient(circle at top, var(--page-glow), transparent 42%),
-    linear-gradient(180deg, var(--page-bottom-soft) 0%, var(--page-mid) 52%, var(--page-top) 100%);
+  background: transparent;
   justify-content: space-between;
   padding: 60px 20px 50px;
 }
@@ -238,7 +248,7 @@
   gap: clamp(8px, 1.5vw, 18px);
   width: min(100%, 760px);
   padding: 18px clamp(14px, 3vw, 28px);
-  background: rgba(13, 33, 28, 0.62);
+  background: rgba(36, 20, 25, 0.62);
   border-top: 1px solid rgba(211, 171, 89, 0.24);
   border-bottom: 1px solid rgba(211, 171, 89, 0.24);
   border-radius: 16px;
@@ -382,7 +392,7 @@
 
 /* ── Section 2: Quote ── */
 .quote-section {
-  background: linear-gradient(180deg, var(--page-mid) 0%, var(--page-bottom-soft) 100%);
+  background: transparent;
 }
 
 .arabic-quote {
@@ -414,7 +424,7 @@
 
 /* ── Section 4: Couple Photos ── */
 .invite-card-section {
-  background: linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 48%, var(--page-bottom) 100%);
+  background: transparent;
 }
 
 .invite-card {
@@ -426,7 +436,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: clamp(24px, 5vw, 52px) clamp(16px, 4vw, 44px);
-  box-shadow: 0 18px 36px rgba(5, 16, 13, 0.26);
+  box-shadow: 0 18px 36px rgba(24, 10, 15, 0.26);
 }
 
 /* Corner ornaments */
@@ -591,7 +601,7 @@
 
 /* ── Section 4: Couple Photos ── */
 .couple-section {
-  background: linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 42%, var(--page-bottom) 100%);
+  background: transparent;
   padding-block: clamp(40px, 7vw, 72px);
 }
 
@@ -772,7 +782,7 @@
 
 /* ── Section 4: Events ── */
 .events-section {
-  background: linear-gradient(180deg, var(--page-mid) 0%, var(--page-bottom-soft) 100%);
+  background: transparent;
   align-items: center;
   padding-block: clamp(28px, 5vw, 48px);
 }
@@ -819,7 +829,7 @@
   position: relative;
   overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 16px 28px rgba(5, 16, 13, 0.22);
+  box-shadow: 0 16px 28px rgba(24, 10, 15, 0.22);
 }
 
 @media (max-width: 540px) {
@@ -957,7 +967,7 @@
 
 /* ── Countdown Section ── */
 .countdown-section {
-  background: linear-gradient(180deg, var(--page-bottom-soft) 0%, var(--page-top) 100%);
+  background: transparent;
 }
 
 .cd-arabic {
@@ -1006,7 +1016,7 @@
   min-width: clamp(70px, 16vw, 100px);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 14px 24px rgba(5, 16, 13, 0.22);
+  box-shadow: 0 14px 24px rgba(24, 10, 15, 0.22);
 }
 
 .cd-unit::before {
@@ -1050,12 +1060,12 @@
 
 /* ── Section 5: Second Quote ── */
 .quote2-section {
-  background: linear-gradient(180deg, var(--page-top) 0%, var(--page-bottom-soft) 100%);
+  background: transparent;
 }
 
 /* ── Section 6: RSVP ── */
 .rsvp-section {
-  background: linear-gradient(180deg, var(--page-mid) 0%, var(--page-top) 100%);
+  background: transparent;
   padding-block: clamp(24px, 4vw, 42px);
 }
 
@@ -1068,7 +1078,7 @@
   border-radius: 8px;
   padding: clamp(18px, 4vw, 32px) clamp(14px, 3.5vw, 28px);
   box-sizing: border-box;
-  box-shadow: 0 18px 34px rgba(5, 16, 13, 0.26);
+  box-shadow: 0 18px 34px rgba(24, 10, 15, 0.26);
 }
 
 .rsvp-title {
@@ -1142,7 +1152,7 @@
 .rsvp-input:focus,
 .rsvp-textarea:focus {
   border-color: var(--gold);
-  background: rgba(31, 71, 59, 0.98);
+  background: rgba(101, 49, 69, 0.98);
   box-shadow: 0 0 0 3px rgba(211, 171, 89, 0.22);
 }
 
@@ -1206,7 +1216,7 @@
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 1.5px;
-  box-shadow: 0 4px 15px rgba(33,85,71,0.22);
+  box-shadow: 0 4px 15px rgba(138, 70, 92, 0.28);
   width: 100%;
 }
 
@@ -1299,7 +1309,7 @@
 
 /* ── Footer Section ── */
 .footer-section {
-  background: linear-gradient(180deg, var(--emerald-deep) 0%, #0f2b22 100%);
+  background: transparent;
   min-height: 100svh;
   padding: 40px 20px;
   scroll-snap-align: start;
