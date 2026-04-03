@@ -281,6 +281,7 @@ export default function App() {
   const scrollRootRef = React.useRef(null);
   const isAnimating = React.useRef(false);
   const currentSection = React.useRef(0);
+  const touchStartY = React.useRef(0);
 
   React.useEffect(() => {
     // Preload images
@@ -291,26 +292,28 @@ export default function App() {
       image.src = src;
     });
 
-    // Custom Scroll Snapping Logic
     const el = scrollRootRef.current;
     if (!el) return;
 
-    const sections = el.querySelectorAll(".section");
-    const count = sections.length;
+    const getSections = () => el.querySelectorAll(".section");
+    const getCount = () => getSections().length;
 
     const snapTo = (index) => {
+      const sections = getSections();
+      const count = sections.length;
       if (index < 0 || index >= count) return;
+      
       isAnimating.current = true;
       currentSection.current = index;
       
       const targetScroll = sections[index].offsetTop;
 
       animate(el.scrollTop, targetScroll, {
-        duration: 1.4,
-        ease: [0.19, 1, 0.22, 1],
+        duration: 2.0, // Slightly slower for that "luxury" feel
+        ease: [0.33, 1, 0.68, 1], // Custom slow-start, smooth-end easing
         onUpdate: (latest) => { el.scrollTop = latest; },
         onComplete: () => { 
-          setTimeout(() => { isAnimating.current = false; }, 150);
+          setTimeout(() => { isAnimating.current = false; }, 200);
         }
       });
     };
@@ -319,11 +322,37 @@ export default function App() {
       e.preventDefault();
       if (isAnimating.current) return;
 
+      // Increased threshold to prevent jumping multiple sections
+      if (Math.abs(e.deltaY) < 15) return;
+
       const direction = e.deltaY > 0 ? 1 : -1;
-      const nextIndex = Math.max(0, Math.min(count - 1, currentSection.current + direction));
+      const nextIndex = Math.max(0, Math.min(getCount() - 1, currentSection.current + direction));
       
       if (nextIndex !== currentSection.current) {
         snapTo(nextIndex);
+      }
+    };
+
+    const handleTouchStart = (e) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      // Prevent default scrolling to ensure our snap logic takes over
+      if (e.cancelable) e.preventDefault();
+    };
+
+    const handleTouchEnd = (e) => {
+      if (isAnimating.current) return;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diff = touchStartY.current - touchEndY;
+      
+      if (Math.abs(diff) > 40) { // Swipe threshold
+        const direction = diff > 0 ? 1 : -1;
+        const nextIndex = Math.max(0, Math.min(getCount() - 1, currentSection.current + direction));
+        if (nextIndex !== currentSection.current) {
+          snapTo(nextIndex);
+        }
       }
     };
 
@@ -331,19 +360,34 @@ export default function App() {
       if (isAnimating.current) return;
       if (e.key === "ArrowDown" || e.key === "PageDown") {
         e.preventDefault();
-        snapTo(Math.min(count - 1, currentSection.current + 1));
+        snapTo(Math.min(getCount() - 1, currentSection.current + 1));
       } else if (e.key === "ArrowUp" || e.key === "PageUp") {
         e.preventDefault();
         snapTo(Math.max(0, currentSection.current - 1));
       }
     };
 
+    const handleResize = () => {
+      // Re-snap on resize to ensure alignment
+      if (isAnimating.current) return;
+      const sections = getSections();
+      el.scrollTop = sections[currentSection.current].offsetTop;
+    };
+
     el.addEventListener("wheel", handleWheel, { passive: false });
+    el.addEventListener("touchstart", handleTouchStart, { passive: true });
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    el.addEventListener("touchend", handleTouchEnd, { passive: true });
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
     
     return () => {
       el.removeEventListener("wheel", handleWheel);
+      el.removeEventListener("touchstart", handleTouchStart);
+      el.removeEventListener("touchmove", handleTouchMove);
+      el.removeEventListener("touchend", handleTouchEnd);
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
