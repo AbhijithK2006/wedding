@@ -5,12 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 
-  // ✅ Required for GitHub Pages
-  base: "/wedding/",
 
   build: {
     chunkSizeWarningLimit: 1000,
-    minify: "esbuild",
 
     rollupOptions: {
       output: {

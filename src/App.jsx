@@ -38,41 +38,28 @@ const SYMBOLS = {
   middleDot: "\u00B7",
 };
 
-const Petals = React.memo(function Petals({ count = 10 }) {
-  const petals = React.useMemo(() => {
-    return Array.from({ length: count }).map((_, i) => ({
-      id: i,
-      left: `${(i * 7 + Math.random() * 93) % 100}%`,
-      top: `-${Math.random() * 20}%`,
-      background: PETAL_COLORS[i % PETAL_COLORS.length],
-      duration: `${6 + Math.random() * 8}s`,
-      delay: `${Math.random() * 12}s`,
-      width: `${8 + Math.random() * 10}px`,
-      height: `${12 + Math.random() * 14}px`,
-    }));
-  }, [count]);
-
-  return petals.map((p) => (
+function Petals({ count = 12 }) {
+  return Array.from({ length: count }).map((_, i) => (
     <div
-      key={p.id}
+      key={i}
       className="petal"
       style={{
-        left: p.left,
-        top: p.top,
-        background: p.background,
-        animationDuration: p.duration,
-        animationDelay: p.delay,
-        width: p.width,
-        height: p.height,
+        left: `${Math.random() * 100}%`,
+        top: `-${Math.random() * 20}%`,
+        background: PETAL_COLORS[i % PETAL_COLORS.length],
+        animationDuration: `${6 + Math.random() * 8}s`,
+        animationDelay: `${Math.random() * 6}s`,
+        width: `${8 + Math.random() * 10}px`,
+        height: `${12 + Math.random() * 14}px`,
         opacity: 0.38,
       }}
     />
   ));
-});
+}
 
 
 
-const PhotoCard = React.memo(function PhotoCard({ name, location, image, alt, objectPosition = "center", imageScale = 1, variants = fadeUp }) {
+function PhotoCard({ name, location, image, alt, objectPosition = "center", imageScale = 1, variants = fadeUp }) {
   return (
     <Motion.div className="photo-card" variants={variants}>
       <div className="photo-frame">
@@ -92,7 +79,7 @@ const PhotoCard = React.memo(function PhotoCard({ name, location, image, alt, ob
       <div className="photo-location">{SYMBOLS.pin} {location}</div>
     </Motion.div>
   );
-});
+}
 
 const WEDDING_DATE = new Date("2026-05-17T12:00:00");
 
@@ -115,7 +102,7 @@ function useCountdown() {
   return time;
 }
 
-function CountdownDisplay() {
+function CountdownSection({ viewport }) {
   const { days, hours, minutes, seconds } = useCountdown();
   const units = [
     { value: days, label: "Days", arabic: "\u0623\u064a\u0651\u064e\u0627\u0645" },
@@ -123,21 +110,6 @@ function CountdownDisplay() {
     { value: minutes, label: "Minutes", arabic: "\u062f\u064e\u0642\u064e\u0627\u0626\u0650\u0642" },
     { value: seconds, label: "Seconds", arabic: "\u062b\u064e\u0648\u064e\u0627\u0646\u0650" },
   ];
-
-  return (
-    <Motion.div className="cd-grid" variants={stagger}>
-      {units.map(({ value, label, arabic }) => (
-        <Motion.div className="cd-unit" key={label} variants={fadeUp}>
-          <div className="cd-value">{String(value).padStart(2, "0")}</div>
-          <div className="cd-unit-label">{label}</div>
-          <div className="cd-unit-arabic">{arabic}</div>
-        </Motion.div>
-      ))}
-    </Motion.div>
-  );
-}
-
-const CountdownSection = React.memo(function CountdownSection({ viewport }) {
   return (
     <section className="section countdown-section">
       <Motion.div
@@ -157,9 +129,15 @@ const CountdownSection = React.memo(function CountdownSection({ viewport }) {
         <Motion.div className="cd-label" variants={fadeUp}>
           Counting Down
         </Motion.div>
-        
-        <CountdownDisplay />
-
+        <Motion.div className="cd-grid" variants={stagger}>
+          {units.map(({ value, label, arabic }) => (
+            <Motion.div className="cd-unit" key={label} variants={fadeUp}>
+              <div className="cd-value">{String(value).padStart(2, "0")}</div>
+              <div className="cd-unit-label">{label}</div>
+              <div className="cd-unit-arabic">{arabic}</div>
+            </Motion.div>
+          ))}
+        </Motion.div>
         <div className="shimmer-line" style={{ marginTop: "32px" }} />
         <Motion.div className="cd-date-line" variants={fadeUp}>
           {`17 ${SYMBOLS.middleDot} 05 ${SYMBOLS.middleDot} 2026`}
@@ -185,7 +163,7 @@ const CountdownSection = React.memo(function CountdownSection({ viewport }) {
       </Motion.div>
     </section>
   );
-});
+}
 
 function RSVPForm() {
   const [form, setForm] = React.useState({ name: "", phone: "", attending: "", guests: "", wishes: "" });
@@ -416,7 +394,7 @@ export default function App() {
   return (
     <div className="invite" ref={scrollRootRef}>
       <div className="invite-petals" aria-hidden="true">
-        <Petals count={10} />
+        <Petals count={24} />
       </div>
 
       {/* 1. HERO */}
