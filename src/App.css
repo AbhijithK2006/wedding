@@ -97,19 +97,28 @@
 }
 
 /* ── Shimmer line ── */
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
 .shimmer-line {
   height: 2px;
   width: 120px;
   margin: 12px auto;
-  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-soft), var(--gold), transparent);
-  background-size: 200% auto;
-  animation: shimmer 2.5s linear infinite;
+  position: relative;
+  overflow: hidden;
+  background: rgba(211, 171, 89, 0.2);
   border-radius: 2px;
+}
+
+.shimmer-line::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-soft), var(--gold), transparent);
+  animation: efficientShimmer 2.5s infinite linear;
+}
+
+@keyframes efficientShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 /* ── Ornament spin ── */
@@ -248,11 +257,11 @@
   gap: clamp(8px, 1.5vw, 18px);
   width: min(100%, 760px);
   padding: 18px clamp(14px, 3vw, 28px);
-  background: rgba(36, 20, 25, 0.62);
+  background: rgba(36, 20, 25, 0.85);
   border-top: 1px solid rgba(211, 171, 89, 0.24);
   border-bottom: 1px solid rgba(211, 171, 89, 0.24);
   border-radius: 16px;
-  backdrop-filter: blur(6px);
+  /* Removed expensive backdrop-filter for performance */
 }
 
 .hed-col {
@@ -455,9 +464,18 @@
   height: 1px;
   width: 80%;
   margin: 16px auto;
+  position: relative;
+  overflow: hidden;
+  background: rgba(211, 171, 89, 0.15);
+}
+
+.card-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: linear-gradient(90deg, transparent, var(--gold), var(--gold-soft), var(--gold), transparent);
-  background-size: 200% auto;
-  animation: shimmer 2.5s linear infinite;
+  animation: efficientShimmer 2.5s infinite linear;
 }
 
 .card-bismillah {
@@ -628,7 +646,7 @@
   z-index: 1;
   width: min(100%, 640px);
   margin-inline: auto;
-  will-change: transform, opacity;
+  /* Removed will-change to avoid layer bloat with high-res images */
 }
 
 .heart-divider {
@@ -651,8 +669,7 @@
   gap: 8px;
   flex: 0 1 170px;
   min-width: 0;
-  will-change: transform, opacity;
-  transform: translateZ(0);
+  /* Reduced layer promotion for stability with heavy assets */
   backface-visibility: hidden;
 }
 
