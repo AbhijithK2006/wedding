@@ -5,14 +5,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 
-  build: {
-    // Increase warning limit (prevents unnecessary warnings)
-    chunkSizeWarningLimit: 1000,
+  // ✅ Required for GitHub Pages
+  base: "/wedding/",
 
-    // Enable minification (default, but explicitly set)
+  build: {
+    chunkSizeWarningLimit: 1000,
     minify: "esbuild",
 
-    // Split code for better loading performance
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -25,7 +24,6 @@ export default defineConfig({
   },
 
   server: {
-    // Faster local dev reload
     open: true,
     port: 5173
   },
